@@ -1,14 +1,31 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Swiper from 'react-native-swiper';
 
 export default class App extends React.Component {
+  state = {
+    messages: ['First', 'Second', 'Third'],
+    index: 0
+  };
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text> Open up App.js to start working on your app! </Text>
-        <Text> Changes you make will automatically reload. </Text>
-        <Text> Shake your phone to open the developer menu. </Text>
-      </View>
+      <Swiper
+        loop={false}
+        index={this.state.index}
+        onIndexChanged={i => {
+          this.setState(state => ({
+            messages: [...state.messages, `Other ${i}`],
+            index: i
+          }));
+        }}
+      >
+        {this.state.messages.map(message => (
+          <View key={message} style={styles.container}>
+            <Text> {message} </Text>
+          </View>
+        ))}
+      </Swiper>
     );
   }
 }
