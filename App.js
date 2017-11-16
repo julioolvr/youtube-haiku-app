@@ -1,26 +1,7 @@
 import React from 'react';
-import { WebView } from 'react-native';
 import Swiper from 'react-native-swiper';
-import createEmbedHtml from './embedded.html.js';
 
-const patchPostMessageFunction = function() {
-  var originalPostMessage = window.postMessage;
-
-  var patchedPostMessage = function(message, targetOrigin, transfer) {
-    originalPostMessage(message, targetOrigin, transfer);
-  };
-
-  patchedPostMessage.toString = function() {
-    return String(Object.hasOwnProperty).replace(
-      'hasOwnProperty',
-      'postMessage'
-    );
-  };
-
-  window.postMessage = patchedPostMessage;
-};
-
-const patchPostMessageJsCode = '(' + String(patchPostMessageFunction) + ')();';
+import YoutubeWebview from './components/YoutubeWebview';
 
 export default class App extends React.Component {
   state = {
@@ -28,26 +9,19 @@ export default class App extends React.Component {
     index: 0
   };
 
-  onWebviewMessage(message) {
-    switch (message) {
-    case 'onReady':
-      this.webview.postMessage('playVideo');
-      break;
-    }
-  }
-
   render() {
     return (
-      <Swiper loop={false} index={this.state.index} showsPagination={false}>
+      <Swiper
+        loop={false}
+        index={this.state.index}
+        showsPagination={false}
+        onIndexChanged={index => this.setState({ index })}
+      >
         {this.state.videos.map((videoId, i) => (
-          <WebView
+          <YoutubeWebview
             key={videoId}
-            ref={webview => i === 0 && (this.webview = webview)}
-            onMessage={e => this.onWebviewMessage(e.nativeEvent.data)}
-            injectedJavaScript={patchPostMessageJsCode}
-            mediaPlaybackRequiresUserAction={false}
-            allowsInlineMediaPlayback={true}
-            source={{ html: createEmbedHtml(videoId) }}
+            videoId={videoId}
+            playing={i === this.state.index}
           />
         ))}
       </Swiper>

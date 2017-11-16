@@ -39,7 +39,7 @@ export default function(videoId) {
         <div class="embed-container">
       <iframe width="100%" height="100%" id="player" src="https://www.youtube.com/embed/${
   videoId
-}?autoplay=1&controls=0&playsinline=1&showinfo=0&rel=0&enablejsapi=1&modestbranding=1"></iframe></div>
+}?autoplay=1&controls=1&playsinline=1&showinfo=0&rel=0&enablejsapi=1&modestbranding=1"></iframe></div>
       <script src="https://www.youtube.com/iframe_api"></script>
 
       <script>
@@ -50,7 +50,6 @@ export default function(videoId) {
           player = new YT.Player('player', {
             events: { onReady: onReady }
           });
-
         });
 
         function onReady() {
@@ -61,6 +60,9 @@ export default function(videoId) {
           switch (e.data) {
             case 'playVideo':
               player.playVideo();
+              break;
+            case 'backToStart':
+              player.seekTo(0, true);
               break;
           }
         }
