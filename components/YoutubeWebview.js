@@ -54,7 +54,9 @@ class YoutubeWebview extends React.Component {
       if (this.props.playing) {
         this.playVideo();
       }
-
+      break;
+    case 'onVideoEnd':
+      this.props.onVideoEnd();
       break;
     }
   }
@@ -78,11 +80,13 @@ class YoutubeWebview extends React.Component {
 
 YoutubeWebview.propTypes = {
   videoId: PropTypes.string.isRequired,
-  playing: PropTypes.bool
+  playing: PropTypes.bool,
+  onVideoEnd: PropTypes.func
 };
 
 YoutubeWebview.defaultProps = {
-  playing: false
+  playing: false,
+  onVideoEnd: () => {}
 };
 
 export default YoutubeWebview;

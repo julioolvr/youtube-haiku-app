@@ -12,6 +12,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Swiper
+        ref={swiper => (this.swiper = swiper)}
         loop={false}
         index={this.state.index}
         showsPagination={false}
@@ -22,6 +23,11 @@ export default class App extends React.Component {
             key={videoId}
             videoId={videoId}
             playing={i === this.state.index}
+            onVideoEnd={() => {
+              if (this.state.index < this.state.videos.length - 1) {
+                this.swiper.scrollBy(1);
+              }
+            }}
           />
         ))}
       </Swiper>

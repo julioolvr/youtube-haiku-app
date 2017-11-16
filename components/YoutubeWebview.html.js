@@ -48,12 +48,20 @@ export default function(videoId) {
 
         YT.ready(function () {
           player = new YT.Player('player', {
-            events: { onReady: onReady }
+            events: { onReady: onReady, onStateChange: onStateChange }
           });
         });
 
         function onReady() {
           postMessage('onReady');
+        }
+
+        function onStateChange(e) {
+          switch (e.data) {
+            case YT.PlayerState.ENDED:
+              postMessage('onVideoEnd');
+              break;
+          }
         }
 
         function onMessageReceived(e) {
