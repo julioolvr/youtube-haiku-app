@@ -73,6 +73,7 @@ class YoutubeWebview extends React.Component {
         mediaPlaybackRequiresUserAction={false}
         allowsInlineMediaPlayback={true}
         source={{ html: createEmbedHtml(videoId) }}
+        scrollEnabled={false}
       />
     );
   }
